@@ -1,0 +1,39 @@
+[
+  {
+    "name": "John Doe shekar",
+    "emailAddress": "johnDoeShekar@example.com",
+    "regpassword": "Password123",
+    "firstname": "John",
+    "lastname": "Doe",
+    "company": "Acme Inc",
+    "address": "123 Main St",
+    "country": "India",
+    "state": "Maharashtra",
+    "city": "Mumbai",
+    "zipcode": "400001",
+    "mobilenumber": "9999999999",
+    "dayValue": "1",
+    "monthValue": "1",
+    "yearValue": "1990",
+    "expected": "success"
+  },
+
+  {
+    "name": "John Duplicate",
+    "emailAddress": "johnDoeShekar@example.com",
+    "regpassword": "Password123",
+    "firstname": "John",
+    "lastname": "Doe",
+    "company": "Acme Inc",
+    "address": "123 Main St",
+    "country": "India",
+    "state": "Maharashtra",
+    "city": "Mumbai",
+    "zipcode": "400001",
+    "mobilenumber": "9999999999",
+    "dayValue": "1",
+    "monthValue": "1",
+    "yearValue": "1990",
+    "expected": "error"
+  }
+]
