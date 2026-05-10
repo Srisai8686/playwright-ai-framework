@@ -126,4 +126,5 @@ Implements dynamic and scalable automation approach
 Focuses on real-world test scenarios
 
 👨‍💻 Author
+Kadiyala Srisai
 Built as part of upskilling journey from Selenium to Playwright automation with focus on modern testing practices and framework design.
