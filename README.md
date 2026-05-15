@@ -20,44 +20,57 @@ The framework is designed to be scalable, reusable, and adaptable for real-world
 
 ## ⚙️ Key Features
 
-- Dynamic test execution using JSON-driven steps
+- Dynamic test execution using JSON-driven steps  
 - Reusable step executor supporting:
   - click
   - fill
   - select
-  - assertions (visibility, text, URL, enabled, count)
-- Simulated AI-based step generation (OpenAI-ready)
-- Data-driven testing using external JSON files
-- Dynamic test data generation (email, name, phone)
-- Duplicate email validation using shared state
-- Screenshot capture for debugging and validation
-- Clean Page Object Model (POM) design
+  - assertions (visibility, text, URL, enabled, count)  
+- Simulated AI-based step generation (OpenAI-ready)  
+- Data-driven testing using external JSON files  
+- Dynamic test data generation (email, name, phone)  
+- Duplicate email validation using shared state  
+- Screenshot capture for debugging and validation  
+- Clean Page Object Model (POM) design  
 
 ---
 
 ## 📂 Project Structure
+
+```
 playwright-automation/
 │
-├── pages/ # Page Object Model classes
-├── tests/ # Test specifications
-├── utils/ # Executor, AI generator, helpers
-├── testData/ # JSON test data
+├── pages/
+├── tests/
+├── utils/
+├── testData/
 ├── README.md
 ├── package.json
 ├── playwright.config.ts
 └── .gitignore
+```
+
+---
 
 ## ▶️ How to Run the Project
 
 ### 1. Install dependencies
+
+```bash
 npm install
+```
 
 ### 2. Run all tests
+
+```bash
 npx playwright test
+```
 
 ### 3. Run specific test
-npx playwright test tests/login.spec.js --headed
 
+```bash
+npx playwright test tests/login.spec.js --headed
+```
 
 ---
 
@@ -65,15 +78,15 @@ npx playwright test tests/login.spec.js --headed
 
 ### 🔐 Login Flow
 
-- Login with valid credentials
-- Login with invalid credentials
-- Error validation
+- Login with valid credentials  
+- Login with invalid credentials  
+- Error validation  
 
 ### 🧾 Registration Flow
 
-- Register new user with dynamic data
-- Validate duplicate email scenario
-- End-to-end user creation
+- Register new user with dynamic data  
+- Validate duplicate email scenario  
+- End-to-end user creation  
 
 ---
 
@@ -81,15 +94,17 @@ npx playwright test tests/login.spec.js --headed
 
 ### 🔹 Dynamic Step Execution
 
-Instead of hardcoding test steps, this framework executes steps dynamically using JSON instructions.
-
 Example:
 
+```json
 {
   "action": "fill",
   "target": "emailAddress",
   "value": "user@test.com"
 }
+```
+
+---
 
 🔹 Simulated AI Integration
 Converts user prompts into test steps
@@ -128,3 +143,4 @@ Focuses on real-world test scenarios
 👨‍💻 Author
 Kadiyala Srisai
 Built as part of upskilling journey from Selenium to Playwright automation with focus on modern testing practices and framework design.
+Built as part of upskilling journey from Selenium to Playwright.

@@ -1,5 +1,5 @@
-import { test, expect } from '@playwright/test';
-import { LoginPage } from '../pages/loginpage.js';
+import { test, expect } from '../baseTest'; // ✅ ONLY this
+//import { LoginPage } from '../pages/loginpage.js';
 import { executeSteps } from '../utils/stepExecutor.js';
 import { generateStepsFromPrompt } from '../utils/aiGenerator.js';
 import fs from 'fs';
@@ -31,19 +31,21 @@ test.describe.parallel(
   'User Login Flow - AI Driven + Data Driven',
   () => {
 
+    test.beforeEach(async ({ loginPage }) => {
+      await loginPage.goto();
+    });
+
     for (const loginData of loginDataArray) {
 
       test(
         `login test with ${loginData.emailAddress || 'empty_email'}`,
-        async ({ page }, testInfo) => {
+        async ({ loginPage }) => {
 
-          const loginPage =
-            new LoginPage(page, testInfo);
 
           // =====================
           // Step 1: Navigate
           // =====================
-          await loginPage.goto();
+          //await loginPage.goto();
 
           await expect(
             loginPage.loginandsignuplink
@@ -55,10 +57,7 @@ test.describe.parallel(
           const prompt =
             buildPrompt(loginData);
 
-          console.log(
-            "👉 Final Prompt:",
-            prompt
-          );
+          console.log("👉 Final Prompt:", prompt);
 
           // =====================
           // Step 3: Generate AI steps
@@ -69,10 +68,7 @@ test.describe.parallel(
               loginData
             );
 
-          console.log(
-            "👉 Generated Steps:",
-            steps
-          );
+          console.log("👉 Generated Steps:", steps);
 
           // =====================
           // Step 4: Execute steps

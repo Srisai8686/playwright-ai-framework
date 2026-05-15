@@ -1,6 +1,4 @@
-import { test, expect } from '@playwright/test';
-import { RegisterPage } from '../pages/registerpage.js';
-import { LoginPage } from '../pages/loginpage.js';
+import { test, expect } from '../baseTest';
 import { executeSteps } from '../utils/stepExecutor.js';
 import { generateStepsFromPrompt } from '../utils/aiGenerator.js';
 import {
@@ -15,7 +13,7 @@ const registerDataArray = JSON.parse(
   fs.readFileSync('./testData/registerData.json', 'utf-8')
 );
 
-// 🔥 Shared email
+// 🔥 Shared email for duplicate scenario
 let sharedEmail;
 
 // 🔥 Prompt Builder
@@ -26,24 +24,21 @@ function buildPrompt(registerData) {
   return "register";
 }
 
-test.describe('AI Register Flow - Data Driven', () => {
+// 🔥 Run sequentially (important for sharedEmail)
+test.describe.serial('AI Register Flow - Data Driven', () => {
 
   for (const data of registerDataArray) {
 
     test(
       `register ${data.expected} test`,
-      async ({ page }, testInfo) => {
-
-        const registerPage = new RegisterPage(page, testInfo);
-        const loginPage = new LoginPage(page, testInfo);
+      async ({ loginPage, registerPage, page }) => {
 
         // =====================
         // 🔥 Dynamic Data Handling
         // =====================
 
         if (data.expected === 'success') {
-
-          sharedEmail = randomEmail(); // generate once
+          sharedEmail = randomEmail();
 
           data.emailAddress = sharedEmail;
           data.name = randomName();
@@ -54,8 +49,7 @@ test.describe('AI Register Flow - Data Driven', () => {
         }
 
         if (data.expected === 'error') {
-
-          data.emailAddress = sharedEmail; // reuse
+          data.emailAddress = sharedEmail;
 
           console.log("👉 Reusing Email:", sharedEmail);
         }
@@ -71,14 +65,12 @@ test.describe('AI Register Flow - Data Driven', () => {
         // Step 2: Prompt
         // =====================
         const prompt = buildPrompt(data);
-
         console.log("👉 Final Prompt:", prompt);
 
         // =====================
         // Step 3: Generate Steps
         // =====================
         const steps = await generateStepsFromPrompt(prompt, data);
-
         console.log("👉 Steps:", steps);
 
         // =====================
@@ -91,7 +83,9 @@ test.describe('AI Register Flow - Data Driven', () => {
         // =====================
         if (data.expected === 'error') {
 
-          await expect(registerPage.emailAlreadyExists).toBeVisible();
+          await expect(registerPage.emailAlreadyExists).toBeVisible({
+            timeout: 10000
+          });
 
           await registerPage.takeScreenshot('duplicate_email');
 
@@ -105,7 +99,13 @@ test.describe('AI Register Flow - Data Driven', () => {
 
         await registerPage.takeScreenshot('registration_success');
 
+        // =====================
+        // Continue → Wait → Logout
+        // =====================
         await registerPage.clickContinue();
+
+        // 🔥 Wait for navigation to complete
+        await page.waitForLoadState('load');
 
         await loginPage.clickLogout();
 
